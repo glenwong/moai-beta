@@ -13,8 +13,8 @@ nacl_env = make_nacl_env.NaClEnvironment(
     use_c_plus_plus_libs=True, 
 	nacl_platform=os.getenv('NACL_TARGET_PLATFORM'))
 	
-fmod_include = os.getenv('FMOD_SDK_ROOT') + '/api/inc';
-fmod_library = os.getenv('FMOD_SDK_ROOT') + '/api/lib/' + 'pepper_15' + '/x86-';
+fmod_include = ''; #os.getenv('FMOD_SDK_ROOT') + '/api/inc';
+fmod_library = ''; #os.getenv('FMOD_SDK_ROOT') + '/api/lib/' + os.getenv('NACL_TARGET_PLATFORM') + '/x86-';
 
 Repository ( "../3rdparty", "../src", "src" )
 
@@ -325,9 +325,7 @@ uslcore_sources = [ os.path.join( 'uslscore', src_file ) for src_file in [
 ]]
 
 aku_sources = [ os.path.join('aku', src_file) for src_file in [
-				'AKU.cpp',
-				'AKU-fmod.cpp',
-]]
+				'AKU.cpp']]
 
 moai_sources = [ os.path.join('moaicore', src_file) for src_file in [
 			    'MOAIAction.cpp'                 ,
@@ -491,12 +489,6 @@ moaiextuntz_sources = [ os.path.join('moaiext-untz', src_file) for src_file in [
 				'MOAIUntzSystem.cpp'              ,
 ]]
 		
-moaiextfmod_sources = [ os.path.join('moaiext-fmod', src_file) for src_file in [ 
-				'MOAIFmod.cpp'              ,
-				'MOAIFmodChannel.cpp'       ,
-				'MOAIFmodSound.cpp'         ,
-]]
-
 nacl_moai_sources = [  'NaClHost.cpp',
 				 'geturl_handler.cc',
 				 'NaClFileSystem.cpp',
@@ -505,7 +497,7 @@ nacl_moai_sources = [  'NaClHost.cpp',
 				 'MOAIApp.cpp',
 				 ]
 
-sources = nacl_moai_sources + zlib_sources + tinyxml_sources + libjpg_sources + jansson_sources + tlsf_sources + expat_sources + libpng_sources + contrib_sources + zipfs_sources + box2d_sources + uslcore_sources + aku_sources + moaiextfmod_sources + moai_sources
+sources = nacl_moai_sources + zlib_sources + tinyxml_sources + libjpg_sources + jansson_sources + tlsf_sources + expat_sources + libpng_sources + contrib_sources + zipfs_sources + box2d_sources + uslcore_sources + aku_sources + moai_sources
 
 nacl_env.Append ( LIBS=['m','nacl_dyncode','c', 'g', 'nacl', 'ppapi_gles2','fmodex', 'ppapi', 'ppapi_cpp', 'pthread', 'nosys' ] )
 
@@ -533,7 +525,7 @@ nacl_env["CPPPATH"] = [ 'lua-5.1.3/src',
 						'config-default',
 						'.' ]
 
-nacl_env.Append ( LIBPATH = ['lib-x86-32/opt','lib-x86-64/opt','x86-32','x86-64',fmod_library+'32', fmod_library+'64'] )
+nacl_env.Append ( LIBPATH = ['lib-x86-32/opt','lib-x86-64/opt','x86-32','x86-64'] )
 
 nacl_env.NaClStaticLibraries ( zlib_sources, 'zlib', is_debug=False )
 nacl_env.Append ( LIBS=[ 'zlib' ] )
@@ -556,7 +548,7 @@ nacl_env.FilterOut( LIBS=['nosys'] )
 nacl_env.Append ( LIBS=['zlib','freetype','box2d','lua','tinyxml','libjpg','jansson','expat','libpng','contrib','lua','nosys'] )
 
 module_name = 'moai'
-opt_nexes = nacl_env.NaClModules( tlsf_sources + zipfs_sources + uslcore_sources + aku_sources + moaiextfmod_sources + moai_sources + nacl_moai_sources , module_name, is_debug=False )
+opt_nexes = nacl_env.NaClModules( tlsf_sources + zipfs_sources + uslcore_sources + aku_sources + moai_sources + nacl_moai_sources , module_name, is_debug=False )
 
 nacl_env.GenerateNmf(target='%s.nmf' % module_name,
 			  source=opt_nexes,

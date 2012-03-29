@@ -3184,6 +3184,8 @@
 		E9CA1E57151C7D71005F39B7 /* MOAIGameCenterIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9CA1E55151C7D71005F39B7 /* MOAIGameCenterIOS.mm */; };
 		E9CA1E5A151C8578005F39B7 /* MOAIWebViewIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = E9CA1E58151C8578005F39B7 /* MOAIWebViewIOS.h */; };
 		E9CA1E5B151C8578005F39B7 /* MOAIWebViewIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = E9CA1E59151C8578005F39B7 /* MOAIWebViewIOS.mm */; };
+		FF552C1B1523E7B500BCF48D /* mp.c in Sources */ = {isa = PBXBuildFile; fileRef = FF552C1A1523E7B500BCF48D /* mp.c */; };
+		FF552C1C1523E7B500BCF48D /* mp.c in Sources */ = {isa = PBXBuildFile; fileRef = FF552C1A1523E7B500BCF48D /* mp.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -5298,6 +5300,7 @@
 		E9CA1E55151C7D71005F39B7 /* MOAIGameCenterIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MOAIGameCenterIOS.mm; path = "moaiext-iphone/MOAIGameCenterIOS.mm"; sourceTree = "<group>"; };
 		E9CA1E58151C8578005F39B7 /* MOAIWebViewIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOAIWebViewIOS.h; path = "moaiext-iphone/MOAIWebViewIOS.h"; sourceTree = "<group>"; };
 		E9CA1E59151C8578005F39B7 /* MOAIWebViewIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MOAIWebViewIOS.mm; path = "moaiext-iphone/MOAIWebViewIOS.mm"; sourceTree = "<group>"; };
+		FF552C1A1523E7B500BCF48D /* mp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mp.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5398,6 +5401,7 @@
 		032409EE13564CAF000ADC60 /* 3rd party */ = {
 			isa = PBXGroup;
 			children = (
+				FF552C191523E7B500BCF48D /* msgpack */,
 				0725E2EB14F45AC700551DB5 /* adcolony */,
 				032409EF13564CAF000ADC60 /* box2d */,
 				03240A3D13564CAF000ADC60 /* chipmunk */,
@@ -8990,6 +8994,15 @@
 				077D500E1519A4A1003DFC89 /* MOAIRenderMgr.h */,
 			);
 			name = render;
+			sourceTree = "<group>";
+		};
+		FF552C191523E7B500BCF48D /* msgpack */ = {
+			isa = PBXGroup;
+			children = (
+				FF552C1A1523E7B500BCF48D /* mp.c */,
+			);
+			name = msgpack;
+			path = ../../3rdparty/msgpack;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -12599,6 +12612,7 @@
 				E9940D6E14B7A414006465CC /* MOAICoroutine.cpp in Sources */,
 				4CFA64CD15203C1000853C7D /* fullluasocket.c in Sources */,
 				4CFA64CF15203C1000853C7D /* luasocketscripts.c in Sources */,
+				FF552C1B1523E7B500BCF48D /* mp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12626,6 +12640,7 @@
 				E9940D6F14B7A414006465CC /* MOAICoroutine.cpp in Sources */,
 				4CFA64C915203C0E00853C7D /* fullluasocket.c in Sources */,
 				4CFA64CB15203C0E00853C7D /* luasocketscripts.c in Sources */,
+				FF552C1C1523E7B500BCF48D /* mp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

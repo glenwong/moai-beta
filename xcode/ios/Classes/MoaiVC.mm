@@ -24,11 +24,14 @@
 	//----------------------------------------------------------------//
 	- ( BOOL ) shouldAutorotateToInterfaceOrientation :( UIInterfaceOrientation )interfaceOrientation {
 		
-		//if ( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
-		//	return true;
-		//}
+        if ( interfaceOrientation == UIInterfaceOrientationLandscapeLeft ) {
+            return true;
+        }
 
 		return false;
 	}
 	
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
 @end

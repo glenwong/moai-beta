@@ -277,6 +277,7 @@ int GlutHost ( int argc, char** argv ) {
 		AKUExtLoadLuafilesystem ();
 		AKUExtLoadLuasocket ();
 		AKUExtLoadLuasql ();
+		AKUExtLoadLuamsgpack ();
 	#endif
 	
 	#ifdef GLUTHOST_USE_UNTZ
