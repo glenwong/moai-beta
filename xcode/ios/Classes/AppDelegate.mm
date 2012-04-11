@@ -52,7 +52,8 @@
 		AKUSetWorkingDirectory ([ luaFolder UTF8String ]);
 		
 		// run scripts
-		[ mMoaiView run:@"main.lua" ];
+        [ mMoaiView run:@"config.lua" ];
+		[ mMoaiView run:@"main_map.lua" ];
 
         // check to see if the app was lanuched from a remote notification
         NSDictionary* pushBundle = [ launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey ];

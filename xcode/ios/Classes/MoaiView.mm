@@ -149,6 +149,7 @@ namespace MoaiInputDeviceSensorID {
 		AKUExtLoadLuacurl ();
 		AKUExtLoadLuacrypto ();
 		AKUExtLoadLuasocket ();
+        AKUExtLoadLuamsgpack();
 		
 		AKUUntzInit ();
 		AKUAudioSamplerInit ();
