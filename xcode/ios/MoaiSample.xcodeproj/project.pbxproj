@@ -1066,7 +1066,7 @@
 					"\"$(SRCROOT)/../../3rdparty/facebookiOS/lib/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = MoaiSample;
-				PROVISIONING_PROFILE = "37DAC6DE-A269-46BB-97ED-CE76DF8D2AEC";
+				PROVISIONING_PROFILE = "29D7F48B-308C-45D0-B3ED-171318CF7663";
 			};
 			name = Debug;
 		};
@@ -1081,7 +1081,7 @@
 					"\"$(SRCROOT)/../../3rdparty/facebookiOS/lib/facebook-ios-sdk\"",
 				);
 				PRODUCT_NAME = MoaiSample;
-				PROVISIONING_PROFILE = "37DAC6DE-A269-46BB-97ED-CE76DF8D2AEC";
+				PROVISIONING_PROFILE = "29D7F48B-308C-45D0-B3ED-171318CF7663";
 			};
 			name = Release;
 		};
