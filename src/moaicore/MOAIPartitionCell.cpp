@@ -2,6 +2,7 @@
 // http://getmoai.com
 
 #include "pch.h"
+#include "float.h"
 #include <moaicore/MOAILogMessages.h>
 #include <moaicore/MOAIPartition.h>
 #include <moaicore/MOAIPartitionCell.h>
@@ -70,6 +71,24 @@ void MOAIPartitionCell::GatherProps ( MOAIPartitionResultBuffer& results, const 
 					results.PushProp ( *prop );
 				}
 			}
+		}
+	}
+}
+
+//----------------------------------------------------------------//
+void MOAIPartitionCell::GatherProps ( MOAIPartitionResultBuffer& results, const MOAIProp* ignore, const USVec3D& rayOrigin, const USVec3D& rayDir, u32 mask ) {
+	
+	PropIt propIt = this->mProps.Head ();
+	for ( ; propIt; propIt = propIt->Next ()) {
+		MOAIProp* prop = propIt->Data ();
+		
+		if ( prop == ignore ) continue;
+		
+		if (( mask == 0 ) || ( prop->mMask & mask )) {
+			float	t;
+			
+			if (USSect::VecToBox(rayOrigin, rayDir, prop->mBounds, t) == USSect::SECT_HIT)
+				results.PushProp(*prop);
 		}
 	}
 }

@@ -30,6 +30,7 @@ namespace USSect {
 	u32		VecToPlane			( const USVec3D& loc, const USVec3D& vec, const USPlane3D& p, float& t );
 	u32		VecToPlane			( const USVec3D& loc, const USVec3D& vec, const USPlane3D& p, float& t, USVec3D& result );
 	u32		VecToSphere			( float& t0, float& t1, const USVec3D& loc, const USVec3D& vec, const USVec3D& sphereLoc, float radius );
+	u32		VecToBox			( const USVec3D&loc, const USVec3D& vec, const USBox& b, float& t);
 	u32		VecToUnitCircle		( float& t0, float& t1, const USVec2D& loc, const USVec2D& vec );
 	u32		VecToUnitSphere		( float& t0, float& t1, const USVec3D& loc, const USVec3D& vec );
 	u32		XAxisToPlane		( float y, const USPlane2D& p, float& t );

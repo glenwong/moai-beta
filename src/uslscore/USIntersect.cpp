@@ -2,6 +2,7 @@
 // http://getmoai.com
 
 #include "pch.h"
+#include "float.h"
 #include <uslscore/USDistance.h>
 #include <uslscore/USIntersect.h>
 #include <uslscore/USTrig.h>
@@ -226,6 +227,105 @@ u32 USSect::VecToSphere ( float& t0, float& t1, const USVec3D& loc, const USVec3
 	}
 
 	return SECT_PARALLEL;
+}
+
+//----------------------------------------------------------------//
+u32 USSect::VecToBox(const USVec3D& loc, const USVec3D& dir, const USBox& b, float& t) {
+	float	tNear = -FLT_MAX;
+	float	tFar = FLT_MAX;
+	float	t1, t2, tTemp;
+	bool	bResult = true;
+	
+	// x axes
+	// if parallel
+	if (dir.mX == 0)
+	{
+		if ((loc.mX < b.mMin.mX) || (loc.mX > b.mMax.mX))
+			return SECT_PARALLEL;
+	}
+	else
+	{
+		t1 = (b.mMin.mX - loc.mX) / dir.mX;
+		t2 = (b.mMax.mX - loc.mX) / dir.mX;
+		
+		if (t1 > t2)
+		{
+			tTemp = t1;
+			t1 = t2;
+			t2 = tTemp;
+		}
+		
+		tNear = max(tNear, t1);
+		tFar = min(tFar, t2);
+		
+		if ((tNear > tFar) || (tFar < 0))
+			bResult = false;
+	}
+	
+	// y axes
+	if (bResult)
+	{
+		if (dir.mY == 0)
+		{
+			if ((loc.mY < b.mMin.mY) || (loc.mY > b.mMax.mY))
+				return SECT_PARALLEL;
+		}
+		else
+		{
+			t1 = (b.mMin.mY - loc.mY) / dir.mY;
+			t2 = (b.mMax.mY - loc.mY) / dir.mY;
+			
+			if (t1 > t2)
+			{
+				tTemp = t1;
+				t1 = t2;
+				t2 = tTemp;
+			}
+			
+			tNear = max(tNear, t1);
+			tFar = min(tFar, t2);
+			
+			if ((tNear > tFar) || (tFar < 0))
+				bResult = false;
+		}
+	}
+	
+	// z axes
+	if (bResult)
+	{
+		if (dir.mZ == 0)
+		{
+			if ((loc.mZ < b.mMin.mZ) || (loc.mY > b.mMax.mZ))
+				return SECT_PARALLEL;
+		}
+		else
+		{
+			t1 = (b.mMin.mZ - loc.mZ) / dir.mZ;
+			t2 = (b.mMax.mZ - loc.mZ) / dir.mZ;
+			
+			if (t1 > t2)
+			{
+				tTemp = t1;
+				t1 = t2;
+				t2 = tTemp;
+			}
+			
+			tNear = max(tNear, t1);
+			tFar = min(tFar, t2);
+			
+			if ((tNear > tFar) || (tFar < 0))
+				bResult = false;
+		}
+	}
+	
+	if (bResult)
+	{
+		t = tNear;
+		return SECT_HIT;
+	}
+	else
+		// not really parallel, need to add an error code for misses
+		return SECT_PARALLEL;
 }
 
 //----------------------------------------------------------------//

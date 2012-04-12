@@ -22,6 +22,7 @@ private:
 	void					ExtractProps		( MOAIPartitionCell& cell, MOAIPartitionLevel* layer );
 	void					GatherProps			( MOAIPartitionResultBuffer& results, MOAIProp* ignore, u32 mask );
 	void					GatherProps			( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USVec3D& point, u32 planeID, u32 mask );
+	void					GatherProps			( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USVec3D& rayOrigin, const USVec3D& rayDir, u32 planeID, u32 mask );
 	void					GatherProps			( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USBox& box, u32 planeID, u32 mask );
 	void					GatherProps			( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USFrustum& frustum, u32 planeID, u32 mask );
 	MOAIPartitionCell*		GetCell				( MOAIProp& prop );

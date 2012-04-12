@@ -42,6 +42,7 @@ private:
 	static int		_insertProp				( lua_State* L );
 	static int		_propForPoint			( lua_State* L );
 	static int		_propListForPoint		( lua_State* L );
+	static int		_propListForRay			( lua_State* L );
 	static int		_propListForRect		( lua_State* L );
 	static int		_removeProp				( lua_State* L );
 	static int		_reserveLevels			( lua_State* L );
@@ -62,6 +63,7 @@ public:
 	void			Clear					();
 	u32				GatherProps				( MOAIPartitionResultBuffer& results, MOAIProp* ignore, u32 mask = 0xffffffff );
 	u32				GatherProps				( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USVec3D& point, u32 mask = 0xffffffff );
+	u32				GatherProps				( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USVec3D& rayOrigin, const USVec3D& rayVec, u32 mask = 0xffffffff );
 	u32				GatherProps				( MOAIPartitionResultBuffer& results, MOAIProp* ignore, USBox box, u32 mask = 0xffffffff );
 	u32				GatherProps				( MOAIPartitionResultBuffer& results, MOAIProp* ignore, const USFrustum& frustum, u32 mask = 0xffffffff );
 	void			InsertProp				( MOAIProp& prop );
