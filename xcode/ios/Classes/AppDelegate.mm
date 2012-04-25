@@ -41,6 +41,9 @@
 
 		// configure window
 		[ application setStatusBarHidden:true ];
+        
+        application.statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
+        
 		mWindow.rootViewController = ( UIViewController* )mMoaiVC;
 		[ mWindow addSubview:mMoaiView ];
 		[ mWindow makeKeyAndVisible ];
@@ -53,7 +56,7 @@
 		
 		// run scripts
         [ mMoaiView run:@"config.lua" ];
-		[ mMoaiView run:@"main.lua" ];
+		[ mMoaiView run:@"main_multitouch.lua" ];
 
         // check to see if the app was lanuched from a remote notification
         NSDictionary* pushBundle = [ launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey ];
