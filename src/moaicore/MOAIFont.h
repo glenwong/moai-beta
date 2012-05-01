@@ -71,6 +71,7 @@ protected:
 
 	STLString mFilename;
 	u32 mFlags;
+	bool mFontOpened = false;
 	
 	MOAILuaSharedPtr < MOAIFontReader > mReader;
 	MOAILuaSharedPtr < MOAIGlyphCacheBase > mCache;

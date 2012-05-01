@@ -56,7 +56,7 @@
 		
 		// run scripts
         [ mMoaiView run:@"config.lua" ];
-		[ mMoaiView run:@"main_multitouch.lua" ];
+		[ mMoaiView run:@"main.lua" ];
 
         // check to see if the app was lanuched from a remote notification
         NSDictionary* pushBundle = [ launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey ];

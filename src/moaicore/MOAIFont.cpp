@@ -449,7 +449,7 @@ void MOAIFont::ProcessGlyphs () {
 
 	if ( !this->mReader ) return;
 
-	this->mReader->OpenFont ( *this );
+	//this->mReader->OpenFont ( *this );
 	
 	MOAIFont::GlyphSetsIt glyphSetsIt = this->mGlyphSets.begin ();
 	for ( ; glyphSetsIt != this->mGlyphSets.end (); ++glyphSetsIt ) {
@@ -465,6 +465,13 @@ void MOAIFont::ProcessGlyphs () {
 		
 		// if no pending glyphs, move on to the next deck
 		if ( !pendingGlyphs ) continue;
+		
+		// we should load the font because we need it
+		if (!this->mFontOpened) {
+			this->mReader->OpenFont(*this);
+			this->mFontOpened = true;
+		}
+		
 		
 		// get the face metrics
 		this->mReader->SetFaceSize ( glyphSet.mSize );
@@ -489,7 +496,10 @@ void MOAIFont::ProcessGlyphs () {
 		}
 	}
 
-	this->mReader->CloseFont ();
+	if (this->mFontOpened) {
+		this->mReader->CloseFont();
+		this->mFontOpened = false;
+	}
 }
 
 //----------------------------------------------------------------//
