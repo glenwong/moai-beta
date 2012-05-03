@@ -141,6 +141,7 @@ public class Moai {
 	protected static native void 	AKUExtLoadLuacurl				();
 	protected static native void 	AKUExtLoadLuasocket				();
 	protected static native void 	AKUExtLoadLuasql				();
+	protected static native void    AKUExtLoadLuamsgpack            ();
 	protected static native void 	AKUFinalize 					();
 	protected static native void 	AKUInit 						();
 	protected static native void 	AKUMountVirtualDirectory 		( String virtualPath, String archive );
@@ -253,6 +254,7 @@ public class Moai {
 		AKUExtLoadLuacurl ();
 		AKUExtLoadLuacrypto ();
 		AKUExtLoadLuasocket ();
+		AKUExtLoadLuamsgpack ();
 
 		AKUInit ();
 		AKUUntzInit ();
