@@ -235,7 +235,7 @@ void MOAIStretchPatch2D::DrawPatch ( u32 idx, MOAIDeckRemapper* remapper, float 
 		yStretchPatchScale = ( rectHeight - ( nativeHeight * this->mYFix )) / ( nativeHeight * this->mYFlex );
 	}
 	else {
-		yPatchScale = rectHeight / nativeWidth;
+		yPatchScale = rectHeight / nativeHeight;
 		yStretchPatchScale = yPatchScale;
 	}
 	
@@ -255,7 +255,7 @@ void MOAIStretchPatch2D::DrawPatch ( u32 idx, MOAIDeckRemapper* remapper, float 
 		MOAIStretchPatchSpan& row = this->mRows [ i ];
 		float vStep = row.mPercent * vSpan;
 		
-		float h = nativeWidth * row.mPercent;
+		float h = nativeHeight * row.mPercent;
 		if ( row.mCanStretch ) {
 			h *= yStretchPatchScale;
 		}
