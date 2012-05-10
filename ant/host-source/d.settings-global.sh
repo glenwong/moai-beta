@@ -10,8 +10,8 @@
 # application and project names
 #----------------------------------------------------------------#
 
-	project_name="untitled"
-	app_name="untitled"
+	project_name="LiM"
+	app_name="LiM"
 
 #----------------------------------------------------------------#
 # version numbers
@@ -46,4 +46,4 @@
 #----------------------------------------------------------------#
 
 	working_dir="lua"
-	run=( "main.lua" )
+	run=( "config.lua" "main.lua" )

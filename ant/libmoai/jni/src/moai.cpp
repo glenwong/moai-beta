@@ -257,6 +257,12 @@
 	}
 
 	//----------------------------------------------------------------//
+	extern "C" void Java_com_ziplinegames_moai_Moai_AKUExtLoadLuamsgpack ( JNIEnv* env, jclass obj ) {
+		
+		AKUExtLoadLuamsgpack ();
+	}
+
+	//----------------------------------------------------------------//
 	extern "C" void Java_com_ziplinegames_moai_Moai_AKUFinalize	( JNIEnv* env, jclass obj ) {
 
 		AKUFinalize ();

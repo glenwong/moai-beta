@@ -137,10 +137,12 @@ public class Moai {
 	protected static native void 	AKUDetectGfxContext 			();
 	protected static native void 	AKUEnqueueLevelEvent 			( int deviceId, int sensorId, float x, float y, float z );
 	protected static native void 	AKUEnqueueTouchEvent 			( int deviceId, int sensorId, int touchId, boolean down, int x, int y, int tapCount );
+	protected static native void    AKUEnqueueLocationEvent         (int deviceId, int sensorId, double longitude, double latitude, double altitude, float hAccuracy, float vAccuracy, float speed);
 	protected static native void 	AKUExtLoadLuacrypto				();
 	protected static native void 	AKUExtLoadLuacurl				();
 	protected static native void 	AKUExtLoadLuasocket				();
 	protected static native void 	AKUExtLoadLuasql				();
+	protected static native void    AKUExtLoadLuamsgpack            ();
 	protected static native void 	AKUFinalize 					();
 	protected static native void 	AKUInit 						();
 	protected static native void 	AKUMountVirtualDirectory 		( String virtualPath, String archive );
@@ -224,6 +226,12 @@ public class Moai {
 	}
 
 	//----------------------------------------------------------------//
+	public static void enqueueLocationEvent ( int deviceId, int sensorId, double longitude, double latitude, double altitude, float hAccuracy, float vAccuracy, float speed ) {
+		
+		AKUEnqueueLocationEvent ( deviceId, sensorId, longitude, latitude, altitude, hAccuracy, vAccuracy, speed );
+	}
+
+	//----------------------------------------------------------------//
 	public static void finish () {
 
 		AKUFinalize ();
@@ -253,6 +261,7 @@ public class Moai {
 		AKUExtLoadLuacurl ();
 		AKUExtLoadLuacrypto ();
 		AKUExtLoadLuasocket ();
+		AKUExtLoadLuamsgpack ();
 
 		AKUInit ();
 		AKUUntzInit ();
