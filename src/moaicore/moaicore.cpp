@@ -7,7 +7,7 @@
 
 extern "C" {
 	#include <zlib.h>
-	#include <zipfs/ZIPFSZipFile.h>
+	#include <zlcore/ZLZipArchive.h>
 }
 
 #if USE_OPENSSL
@@ -23,6 +23,10 @@ extern "C" {
 	#endif
 
 	#include <openssl/ssl.h>
+#endif
+
+#if USE_ARES
+	#include <ares.h>
 #endif
 
 //----------------------------------------------------------------//
@@ -90,6 +94,7 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	REGISTER_LUA_CLASS ( MOAIAnim )
 	REGISTER_LUA_CLASS ( MOAIAnimCurve )
 	REGISTER_LUA_CLASS ( MOAIBitmapFontReader )
+	REGISTER_LUA_CLASS ( MOAIBoundsDeck )
 	REGISTER_LUA_CLASS ( MOAIButtonSensor )
 	REGISTER_LUA_CLASS ( MOAICamera )
 	REGISTER_LUA_CLASS ( MOAICameraAnchor2D )
@@ -108,6 +113,8 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	REGISTER_LUA_CLASS ( MOAIEaseDriver )
 	REGISTER_LUA_CLASS ( MOAIEaseType )
 	REGISTER_LUA_CLASS ( MOAIFileSystem )
+	REGISTER_LUA_CLASS ( MOAIFoo )
+	REGISTER_LUA_CLASS ( MOAIFooMgr )
 	REGISTER_LUA_CLASS ( MOAIFont )
 	REGISTER_LUA_CLASS ( MOAIFrameBuffer )
 	REGISTER_LUA_CLASS ( MOAIGfxDevice )
@@ -117,7 +124,6 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	REGISTER_LUA_CLASS ( MOAIGrid )
 	REGISTER_LUA_CLASS ( MOAIGridSpace )
 	REGISTER_LUA_CLASS ( MOAIGridPathGraph )
-
 	REGISTER_LUA_CLASS ( MOAIImage )
 	REGISTER_LUA_CLASS ( MOAIImageTexture )
 	REGISTER_LUA_CLASS ( MOAIIndexBuffer )
@@ -135,8 +141,10 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	REGISTER_LUA_CLASS ( MOAIMotionSensor )
 	REGISTER_LUA_CLASS ( MOAIMultiTexture )
 	REGISTER_LUA_CLASS ( MOAIParser )
+	REGISTER_LUA_CLASS ( MOAIParticleCallbackPlugin )
 	REGISTER_LUA_CLASS ( MOAIParticleDistanceEmitter )
 	REGISTER_LUA_CLASS ( MOAIParticleForce )
+	REGISTER_LUA_CLASS ( MOAIParticlePexPlugin )
 	REGISTER_LUA_CLASS ( MOAIParticleScript )
 	REGISTER_LUA_CLASS ( MOAIParticleState )
 	REGISTER_LUA_CLASS ( MOAIParticleSystem )
@@ -147,6 +155,7 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	REGISTER_LUA_CLASS ( MOAIPointerSensor )
 	REGISTER_LUA_CLASS ( MOAIProp )
 	REGISTER_LUA_CLASS ( MOAIRenderMgr )
+	REGISTER_LUA_CLASS ( MOAIScissorRect )
 	REGISTER_LUA_CLASS ( MOAIScriptDeck )
 	REGISTER_LUA_CLASS ( MOAIScriptNode )
 	REGISTER_LUA_CLASS ( MOAISerializer )
@@ -156,6 +165,7 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	REGISTER_LUA_CLASS ( MOAIStaticGlyphCache )
 	REGISTER_LUA_CLASS ( MOAIStretchPatch2D )
 	REGISTER_LUA_CLASS ( MOAISurfaceDeck2D )
+	REGISTER_LUA_CLASS ( MOAITextBundle )
 	REGISTER_LUA_CLASS ( MOAITextBox )
 	REGISTER_LUA_CLASS ( MOAITextStyle )
 	REGISTER_LUA_CLASS ( MOAITexture )
@@ -208,6 +218,8 @@ void moaicore::InitGlobals ( MOAIGlobals* globals ) {
 	#if MOAI_OS_NACL
 		REGISTER_LUA_CLASS ( MOAIHttpTaskNaCl )
 	#endif
+	
+	MOAIEnvironment::Get ().DetectEnvironment ();
 }
 
 //----------------------------------------------------------------//
@@ -234,7 +246,7 @@ void moaicore::SystemFinalize () {
 		CRYPTO_cleanup_all_ex_data ();
 	#endif
 	
-	zipfs_cleanup ();
+	zl_cleanup ();
 }
 
 //----------------------------------------------------------------//
@@ -243,13 +255,17 @@ void moaicore::SystemInit () {
 	_typeCheck ();
 		
 	srand (( u32 )time ( 0 ));
-	zipfs_init ();
+	zl_init ();
 	
 	#if USE_OPENSSL
 		SSL_load_error_strings ();
 		SSL_library_init ();
 	#endif
 
+	#if USE_ARES
+		ares_set_default_dns_addr ( 0x08080808 );
+	#endif
+	
 	#if USE_CURL
 		curl_global_init ( CURL_GLOBAL_WIN32 | CURL_GLOBAL_SSL );
 	#endif

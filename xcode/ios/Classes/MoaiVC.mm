@@ -31,7 +31,4 @@
 		return false;
 	}
 	
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
 @end

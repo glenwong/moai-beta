@@ -12,11 +12,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings.Secure;
-import android.view.View;
 
 import java.lang.reflect.Method;
+import java.lang.Runtime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -118,6 +117,7 @@ public class Moai {
 	private static String [] sExternalClasses = {
 		"com.ziplinegames.moai.MoaiAdColony",
 		"com.ziplinegames.moai.MoaiAmazonBilling",
+		"com.ziplinegames.moai.MoaiChartBoost",
 		"com.ziplinegames.moai.MoaiCrittercism",
 		"com.ziplinegames.moai.MoaiFacebook",
 		"com.ziplinegames.moai.MoaiGoogleBilling",
@@ -125,9 +125,9 @@ public class Moai {
 		"com.ziplinegames.moai.MoaiTapjoy",
 	};
 	
-	private static Activity 			sActivity = null;
-	private static ApplicationState 	sApplicationState = ApplicationState.APPLICATION_UNINITIALIZED;
-	private static ArrayList < Class > 	sAvailableClasses = new ArrayList < Class > ();
+	private static Activity 				sActivity = null;
+	private static ApplicationState 		sApplicationState = ApplicationState.APPLICATION_UNINITIALIZED;
+	private static ArrayList < Class < ? >>	sAvailableClasses = new ArrayList < Class < ? >> ();
 
 	protected static native boolean	AKUAppBackButtonPressed			();
 	protected static native void 	AKUAppDialogDismissed			( int dialogResult );
@@ -153,7 +153,7 @@ public class Moai {
 	protected static native void	AKURunScript 					( String filename );
 	protected static native void	AKUSetConnectionType 			( long connectionType );
 	protected static native void 	AKUSetContext 					( int contextId );
-	protected static native void 	AKUSetDeviceProperties 			( String appName, String appId, String appVersion, String abi, String devBrand, String devName, String devManufacturer, String devModel, String devProduct, String osBrand, String osVersion, String udid );
+	protected static native void 	AKUSetDeviceProperties 			( String appName, String appId, String appVersion, String abi, String devBrand, String devName, String devManufacturer, String devModel, String devProduct, int numProcessors, String osBrand, String osVersion, String udid );
 	protected static native void 	AKUSetDocumentDirectory 		( String path );
 	protected static native void 	AKUSetInputConfigurationName	( String name );
 	protected static native void 	AKUSetInputDevice		 		( int deviceId, String name );
@@ -172,7 +172,7 @@ public class Moai {
 		
 		for ( String className : sExternalClasses )
 		{
-			Class theClass = findClass ( className );
+			Class < ? > theClass = findClass ( className );
 			if ( theClass != null ) {
 				
 				sAvailableClasses.add ( theClass );
@@ -293,7 +293,7 @@ public class Moai {
 			udid = "UNKNOWN";
 		}
 		
-		AKUSetDeviceProperties ( appName, appId, appVersion, Build.CPU_ABI, Build.BRAND, Build.DEVICE, Build.MANUFACTURER, Build.MODEL, Build.PRODUCT, "Android", Build.VERSION.RELEASE, udid );
+		AKUSetDeviceProperties ( appName, appId, appVersion, Build.CPU_ABI, Build.BRAND, Build.DEVICE, Build.MANUFACTURER, Build.MODEL, Build.PRODUCT, Runtime.getRuntime ().availableProcessors (), "Android", Build.VERSION.RELEASE, udid );
 	}	
 
 	//----------------------------------------------------------------//
@@ -305,9 +305,9 @@ public class Moai {
 	//----------------------------------------------------------------//
 	public static void onActivityResult ( int requestCode, int resultCode, Intent data ) {
 	
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 
-			executeMethod ( theClass, null, "onActivityResult", new Class [] { java.lang.Integer.TYPE, java.lang.Integer.TYPE, Intent.class }, new Object [] { new Integer ( requestCode ), new Integer ( resultCode ), data });
+			executeMethod ( theClass, null, "onActivityResult", new Class < ? > [] { java.lang.Integer.TYPE, java.lang.Integer.TYPE, Intent.class }, new Object [] { new Integer ( requestCode ), new Integer ( resultCode ), data });
 		}	
 	}
 
@@ -316,54 +316,54 @@ public class Moai {
 
 		sActivity = activity;
 
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 			
-			executeMethod ( theClass, null, "onCreate", new Class [] { Activity.class }, new Object [] { activity });
+			executeMethod ( theClass, null, "onCreate", new Class < ? > [] { Activity.class }, new Object [] { activity });
 		}
 	}
 	
 	//----------------------------------------------------------------//
 	public static void onDestroy () {
 	
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 
-			executeMethod ( theClass, null, "onDestroy", new Class [] { }, new Object [] { });
+			executeMethod ( theClass, null, "onDestroy", new Class < ? > [] { }, new Object [] { });
 		}		
 	}
 
 	//----------------------------------------------------------------//
 	public static void onPause () {
 	
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 
-			executeMethod ( theClass, null, "onPause", new Class [] { }, new Object [] { });
+			executeMethod ( theClass, null, "onPause", new Class < ? > [] { }, new Object [] { });
 		}		
 	}
 
 	//----------------------------------------------------------------//
 	public static void onResume () {
 	
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 
-			executeMethod ( theClass, null, "onResume", new Class [] { }, new Object [] { });
+			executeMethod ( theClass, null, "onResume", new Class < ? > [] { }, new Object [] { });
 		}		
 	}
 
 	//----------------------------------------------------------------//
 	public static void onStart () {
 	
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 
-			executeMethod ( theClass, null, "onStart", new Class [] { }, new Object [] { });
+			executeMethod ( theClass, null, "onStart", new Class < ? > [] { }, new Object [] { });
 		}		
 	}
 
 	//----------------------------------------------------------------//
 	public static void onStop () {
 	
-		for ( Class theClass : sAvailableClasses ) {
+		for ( Class < ? > theClass : sAvailableClasses ) {
 
-			executeMethod ( theClass, null, "onStop", new Class [] { }, new Object [] { });
+			executeMethod ( theClass, null, "onStop", new Class < ? > [] { }, new Object [] { });
 		}		
 	}
 
@@ -392,9 +392,9 @@ public class Moai {
 			
 			sApplicationState = state;
 		
-			for ( Class theClass : sAvailableClasses ) {
+			for ( Class < ? > theClass : sAvailableClasses ) {
 			
-				executeMethod ( theClass, null, "onApplicationStateChanged", new Class [] { ApplicationState.class }, new Object [] { sApplicationState });
+				executeMethod ( theClass, null, "onApplicationStateChanged", new Class < ? > [] { ApplicationState.class }, new Object [] { sApplicationState });
 			}
 		}
 	}
@@ -446,9 +446,9 @@ public class Moai {
 	//================================================================//
 	
 	//----------------------------------------------------------------//
-	private static Class findClass ( String className ) {
+	private static Class < ? > findClass ( String className ) {
 		
-		Class theClass = null;
+		Class < ? > theClass = null;
 		try {
 
 			theClass = Class.forName ( className );
@@ -460,7 +460,7 @@ public class Moai {
 	}
 	
 	//----------------------------------------------------------------//
-	private static Object executeMethod ( Class theClass, Object theInstance, String methodName, Class [] parameterTypes, Object [] parameterValues ) {
+	private static Object executeMethod ( Class < ? > theClass, Object theInstance, String methodName, Class < ? > [] parameterTypes, Object [] parameterValues ) {
 		
 		Object result = null;
 		if ( theClass != null ) {

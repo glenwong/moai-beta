@@ -17,14 +17,14 @@
 	@overload	Apply the anim at time t0.
 
 		@in		MOAIAnim self
-		@in		number t0 - Default value is 0.
+		@opt	number t0 - Default value is 0.
 		@out	nil
 	
 	@overload	Apply the anim for the step t0 to t1.
 
 		@in		MOAIAnim self
-		@in		number t0 - Default value is 0.
-		@in		number t1 - Default value is 0.
+		@in		number t0
+		@in		number t1
 		@out	nil
 */
 int MOAIAnim::_apply ( lua_State* L ) {
@@ -79,17 +79,17 @@ int	MOAIAnim::_reserveLinks ( lua_State* L ) {
 	@in		MOAIAnimCurve curve
 	@in		MOAINode target - Target node.
 	@in		number attrID - Attribute of the target node to be driven by the curve.
-	@in		boolean asDelta - 'true' to apply the curve as a delta instead of an absolute.
+	@opt	boolean asDelta - 'true' to apply the curve as a delta instead of an absolute. Default value is false.
 	@out	nil
 */
 int	MOAIAnim::_setLink ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAIAnim, "UNUUN" );
 	
-	MOAINode* target = state.GetLuaObject < MOAINode >( 4 );
+	MOAINode* target = state.GetLuaObject < MOAINode >( 4, true );
 	if ( !target ) return 0;
 	
 	u32 linkID				= state.GetValue < u32 >( 2, 1 ) - 1;
-	MOAIAnimCurve* curve	= state.GetLuaObject < MOAIAnimCurve >( 3 );
+	MOAIAnimCurve* curve	= state.GetLuaObject < MOAIAnimCurve >( 3, true );
 	u32 attrID				= state.GetValue < u32 >( 5, 0 );
 	bool relative			= state.GetValue < bool >( 6, false );
 	

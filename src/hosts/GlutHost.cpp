@@ -13,8 +13,12 @@
 	#include <aku/AKU-debugger.h>
 #endif
 
-#ifdef GLUTHOST_USE_FMOD
-	#include <aku/AKU-fmod.h>
+#ifdef GLUTHOST_USE_FMOD_DESIGNER
+	#include <aku/AKU-fmod-designer.h>
+#endif
+
+#ifdef GLUTHOST_USE_FMOD_EX
+	#include <aku/AKU-fmod-ex.h>
 #endif
 
 #ifdef GLUTHOST_USE_LUAEXT
@@ -41,7 +45,7 @@
 #endif
 
 #ifdef __APPLE__
-//	#include <FolderWatcher-mac.h>
+	#include <FolderWatcher-mac.h>
 #endif
 
 namespace GlutInputDeviceID {
@@ -174,17 +178,21 @@ static void _onTimer ( int millisec ) {
 	int timerInterval = ( int )( AKUGetSimStep () * 1000.0 );
 	glutTimerFunc ( timerInterval, _onTimer, timerInterval );
 	
+	#ifdef GLUTHOST_USE_DEBUGGER
+        AKUDebugHarnessUpdate ();
+    #endif
+	
 	AKUUpdate ();
 	
-	#ifdef AKUGLUT_USE_FMOD
-		AKUFmodUpdate ();
+	#ifdef GLUTHOST_USE_FMOD_EX
+		AKUFmodExUpdate ();
 	#endif
 	
 	if ( sDynamicallyReevaluatsLuaFiles ) {		
 		#ifdef _WIN32
 			winhostext_Query ();
 		#elif __APPLE__
-//			FWReloadChangedLuaFiles ();
+			FWReloadChangedLuaFiles ();
 		#endif
 	}
 	
@@ -258,6 +266,18 @@ void _AKUOpenWindowFunc ( const char* title, int width, int height ) {
 }
 
 //================================================================//
+// AKU-debugger callbacks
+//================================================================//
+
+#if GLUTHOST_USE_DEBUGGER
+    void    _AKUErrorTracebackFunc      ( const char* message, lua_State* L, int level );
+
+    void _AKUErrorTracebackFunc ( const char* message, lua_State* L, int level ) {
+        AKUDebugHarnessHandleError ( message, L, level );
+    }
+#endif
+
+//================================================================//
 // GlutHost
 //================================================================//
 
@@ -275,7 +295,7 @@ static void _cleanup () {
 		#ifdef _WIN32
 			winhostext_CleanUp ();
 		#elif __APPLE__
-//			FWStopAll ();
+			FWStopAll ();
 		#endif
 	}
 }
@@ -307,7 +327,7 @@ int GlutHost ( int argc, char** argv ) {
 		#ifdef _WIN32
 			winhostext_WatchFolder ( argv [ argc - 1 ]);
 		#elif __APPLE__
-//			FWWatchFolder( argv [ argc - 1 ] );
+			FWWatchFolder( argv [ argc - 1 ] );
 		#endif
 	}
 	
@@ -318,15 +338,21 @@ int GlutHost ( int argc, char** argv ) {
 	return 0;
 }
 
+//----------------------------------------------------------------//
 void GlutRefreshContext () {
+
 	AKUContextID context = AKUGetContext ();
 	if ( context ) {
 		AKUDeleteContext ( context );
 	}
 	AKUCreateContext ();
 
-	#ifdef GLUTHOST_USE_FMOD
-		AKUFmodLoad ();
+	#ifdef GLUTHOST_USE_FMOD_DESIGNER
+		AKUFmodDesignerInit ();
+	#endif
+
+	#ifdef GLUTHOST_USE_FMOD_EX
+		AKUFmodExInit ();
 	#endif
 	
 	#ifdef GLUTHOST_USE_LUAEXT
@@ -367,6 +393,7 @@ void GlutRefreshContext () {
 	AKUSetFunc_OpenWindow ( _AKUOpenWindowFunc );
 
 	#ifdef GLUTHOST_USE_DEBUGGER
+		AKUSetFunc_ErrorTraceback ( _AKUErrorTracebackFunc );
 		AKUDebugHarnessInit ();
 	#endif
 

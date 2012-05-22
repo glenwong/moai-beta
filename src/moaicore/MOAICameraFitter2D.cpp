@@ -63,7 +63,7 @@ int MOAICameraFitter2D::_getFitDistance ( lua_State* L ) {
 
 //----------------------------------------------------------------//
 /**	@name	getFitLoc
-	@text	Get the 
+	@text	Get the fitter location.
 	
 	@in		MOAICameraFitter2D self
 	@out	number x
@@ -88,7 +88,7 @@ int MOAICameraFitter2D::_getFitMode ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAICameraFitter2D, "U" )
 	
 	state.Push ( self->mFittingMode );
-	return 0;
+	return 1;
 }
 
 //----------------------------------------------------------------//
@@ -107,7 +107,7 @@ int MOAICameraFitter2D::_getFitScale ( lua_State* L ) {
 
 //----------------------------------------------------------------//
 /**	@name	getTargetLoc
- @text	Get the 
+ @text	Get the target location.
  
  @in	MOAICameraFitter2D self
  @out	number x
@@ -146,7 +146,7 @@ int MOAICameraFitter2D::_getTargetScale ( lua_State* L ) {
 int MOAICameraFitter2D::_insertAnchor ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAICameraFitter2D, "UU" )
 	
-	MOAICameraAnchor2D* anchor = state.GetLuaObject < MOAICameraAnchor2D >( 2 );
+	MOAICameraAnchor2D* anchor = state.GetLuaObject < MOAICameraAnchor2D >( 2, true );
 	if ( anchor ) {
 		self->AddAnchor ( *anchor );
 	}
@@ -164,7 +164,7 @@ int MOAICameraFitter2D::_insertAnchor ( lua_State* L ) {
 int MOAICameraFitter2D::_removeAnchor ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAICameraFitter2D, "UU" )
 	
-	MOAICameraAnchor2D* anchor = state.GetLuaObject < MOAICameraAnchor2D >( 2 );
+	MOAICameraAnchor2D* anchor = state.GetLuaObject < MOAICameraAnchor2D >( 2, true );
 	if ( anchor ) {
 		self->RemoveAnchor ( *anchor );
 	}
@@ -219,13 +219,13 @@ int MOAICameraFitter2D::_setBounds ( lua_State* L ) {
 			screen.
 	
 	@in		MOAICameraFitter2D self
-	@in		MOAITransform camera		Default value is nil.
+	@opt	MOAITransform camera		Default value is nil.
 	@out	nil
 */
 int MOAICameraFitter2D::_setCamera ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAICameraFitter2D, "U" )
 	
-	self->mCamera.Set ( *self, state.GetLuaObject < MOAITransform >( 2 ));
+	self->mCamera.Set ( *self, state.GetLuaObject < MOAITransform >( 2, true ));
 	return 0;
 }
 
@@ -341,7 +341,7 @@ int MOAICameraFitter2D::_setMin ( lua_State* L ) {
 int MOAICameraFitter2D::_setViewport ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAICameraFitter2D, "U" )
 	
-	self->mViewport.Set ( *self, state.GetLuaObject < MOAIViewport >( 2 ));
+	self->mViewport.Set ( *self, state.GetLuaObject < MOAIViewport >( 2, true ));
 	return 0;
 }
 
@@ -363,7 +363,7 @@ int MOAICameraFitter2D::_setViewport ( lua_State* L ) {
 int MOAICameraFitter2D::_snapToTarget ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAICameraFitter2D, "U" )
 	
-	MOAITransform* camera = state.GetLuaObject < MOAITransform >( 2 );
+	MOAITransform* camera = state.GetLuaObject < MOAITransform >( 2, true );
 	if ( camera ) {
 		self->SnapToTargetLoc ( *camera );
 		self->SnapToTargetScale ( *camera );

@@ -24,8 +24,8 @@
 
 	LOCAL_MODULE 	:= moai
 	LOCAL_ARM_MODE 	:= $(MY_ARM_MODE)
-	LOCAL_LDLIBS 	:= -llog -lGLESv1_CM -lGLESv2 -lz crypto/libs/$(TARGET_ARCH_ABI)/libcrypto.a ../obj/local/$(TARGET_ARCH_ABI)/libogg.a
-	LOCAL_CFLAGS	:= $(DISABLE_TAPJOY) $(DISABLE_NOTIFICATIONS) $(DISABLE_BILLING) $(DISABLE_CRITTERCISM) $(DISABLE_ADCOLONY)
+	LOCAL_LDLIBS 	:= -llog -lGLESv1_CM -lGLESv2 crypto/libs/$(TARGET_ARCH_ABI)/libcrypto.a
+	LOCAL_CFLAGS	:= $(DISABLE_ADCOLONY) $(DISABLE_BILLING) $(DISABLE_CHARTBOOST) $(DISABLE_CRITTERCISM) $(DISABLE_FACEBOOK) $(DISABLE_NOTIFICATIONS) $(DISABLE_TAPJOY)
 	
 #----------------------------------------------------------------#
 # header search paths
@@ -38,7 +38,7 @@
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/src/moaicore
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/src/moaiext-untz
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/src/uslscore
-	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/src/zipfs
+	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/src/zlcore
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/box2d-2.2.1/
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/box2d-2.2.1/Box2D
@@ -75,6 +75,7 @@
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/luacurl-1.2.1
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/luafilesystem-1.5.0/src
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/luasocket-2.0.2/src
+	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/luasocket-2.0.2-embed/src
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/luasql-2.2.0/src
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/msgpack
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/openssl-1.0.0d/include-android
@@ -85,6 +86,7 @@
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/untz/include
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/untz/src
 	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/untz/src/native/android
+	MY_HEADER_SEARCH_PATHS += $(MY_MOAI_ROOT)/3rdparty/3rdparty/zlib-1.2.3
 
 #----------------------------------------------------------------#
 # source files
@@ -114,13 +116,13 @@
 	LOCAL_STATIC_LIBRARIES += libjpg
 	LOCAL_STATIC_LIBRARIES += libjson
 	LOCAL_STATIC_LIBRARIES += liblua
-	LOCAL_STATIC_LIBRARIES += libogg
 	LOCAL_STATIC_LIBRARIES += libpng
 	LOCAL_STATIC_LIBRARIES += libsqlite
 	LOCAL_STATIC_LIBRARIES += libssl
 	LOCAL_STATIC_LIBRARIES += libtinyxml
 	LOCAL_STATIC_LIBRARIES += libvorbis
-	LOCAL_STATIC_LIBRARIES += libzipfs
+	LOCAL_STATIC_LIBRARIES += libogg
+	LOCAL_STATIC_LIBRARIES += libzlcore
 
 	include $(BUILD_SHARED_LIBRARY)
 
@@ -147,7 +149,7 @@
 	include ssl/Android.mk
 	include tinyxml/Android.mk
 	include vorbis/Android.mk
-	include zipfs/Android.mk
+	include zlcore/Android.mk
 
 	include aku/Android.mk
 	include moaicore/Android.mk

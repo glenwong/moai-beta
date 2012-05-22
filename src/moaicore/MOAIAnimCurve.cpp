@@ -4,6 +4,7 @@
 #include "pch.h"
 #include <moaicore/MOAIAnimCurve.h>
 #include <moaicore/MOAILogMessages.h>
+#include <uslscore/USBinarySearch.h>
 
 //================================================================//
 // local
@@ -66,9 +67,9 @@ int MOAIAnimCurve::_reserveKeys ( lua_State* L ) {
 	@in		number index			Index of the keyframe.
 	@in		number time				Location of the key frame along the curve.
 	@in		number value			Value of the curve at time.
-	@in		number mode				The ease mode. One of MOAIEaseType.EASE_IN, MOAIEaseType.EASE_OUT, MOAIEaseType.FLAT MOAIEaseType.LINEAR,
+	@opt	number mode				The ease mode. One of MOAIEaseType.EASE_IN, MOAIEaseType.EASE_OUT, MOAIEaseType.FLAT MOAIEaseType.LINEAR,
 									MOAIEaseType.SMOOTH, MOAIEaseType.SOFT_EASE_IN, MOAIEaseType.SOFT_EASE_OUT, MOAIEaseType.SOFT_SMOOTH. Defaults to MOAIEaseType.SMOOTH.
-	@in		number weight			Blends between chosen ease type (of any) and a linear transition.
+	@opt	number weight			Blends between chosen ease type (of any) and a linear transition. Defaults to 1.
 	@out	nil
 */
 int MOAIAnimCurve::_setKey ( lua_State* L ) {
@@ -94,13 +95,13 @@ int MOAIAnimCurve::_setKey ( lua_State* L ) {
 	        
 	
 	@in		MOAIAnimCurve self
-	@in		number mode			One of MOAIAnimCurve.CLAMP, MOAIAnimCurve.WRAP, MOAIAnimCurve.MIRROR,
+	@opt	number mode			One of MOAIAnimCurve.CLAMP, MOAIAnimCurve.WRAP, MOAIAnimCurve.MIRROR,
 								MOAIAnimCurve.APPEND. Default value is MOAIAnimCurve.CLAMP.
 
 	@out	nil
 */
 int	MOAIAnimCurve::_setWrapMode	( lua_State* L ) {
-	MOAI_LUA_SETUP ( MOAIAnimCurve, "UN" );
+	MOAI_LUA_SETUP ( MOAIAnimCurve, "U" );
 
 	u32 mode = state.GetValue < u32 >( 2, CLAMP );
 
@@ -131,25 +132,25 @@ bool MOAIAnimCurve::ApplyAttrOp ( u32 attrID, MOAIAttrOp& attrOp, u32 op ) {
 }
 
 //----------------------------------------------------------------//
-u32 MOAIAnimCurve::FindKeyID ( float time ) {
-
-	u32 keyID = 0;
-	for ( u32 i = 0; i < this->Size (); ++i ) {
-		if (( *this )[ i ].mTime > time ) break;
-		keyID = i;
-	}
-	return keyID;
+u32 MOAIAnimCurve::FindKeyID ( float time ) const {
+	
+	MOAIAnimKey key;
+	key.mTime = time;
+	
+	u32 index = USBinarySearchNearest < MOAIAnimKey >( this->Data (), key, this->Size ());
+	
+	return index;
 }
 
 //----------------------------------------------------------------//
-bool MOAIAnimCurve::GetBoolValue ( float time ) {
+bool MOAIAnimCurve::GetBoolValue ( float time ) const {
 
 	float value = this->GetFloatValue ( time );
 	return ( value > 0.5f ) ? true : false;
 }
 
 //----------------------------------------------------------------//
-float MOAIAnimCurve::GetFloatDelta ( float t0, float t1 ) {
+float MOAIAnimCurve::GetFloatDelta ( float t0, float t1 ) const {
 
 	u32 total = this->Size ();
 	if ( total < 2 ) return 0.0f;
@@ -275,7 +276,7 @@ float MOAIAnimCurve::GetFloatDelta ( float t0, float t1 ) {
 }
 
 //----------------------------------------------------------------//
-float MOAIAnimCurve::GetFloatValue ( float time ) {
+float MOAIAnimCurve::GetFloatValue ( float time ) const {
 
 	u32 total = this->Size ();
 	if ( total == 0 ) return 0.0f;
@@ -332,21 +333,21 @@ float MOAIAnimCurve::GetFloatValue ( float time ) {
 }
 
 //----------------------------------------------------------------//
-u32 MOAIAnimCurve::GetIndexValue ( float time ) {
+u32 MOAIAnimCurve::GetIndexValue ( float time ) const {
 
 	float value = this->GetFloatValue ( time );
 	return ( value < 0.0f ) ? 0 : ( u32 )value;
 }
 
 //----------------------------------------------------------------//
-int MOAIAnimCurve::GetIntValue ( float time ) {
+int MOAIAnimCurve::GetIntValue ( float time ) const {
 
 	float value = this->GetFloatValue ( time );
 	return ( int ) value;
 }
 
 //----------------------------------------------------------------//
-float MOAIAnimCurve::GetLength () {
+float MOAIAnimCurve::GetLength () const {
 
 	u32 total = this->Size ();
 	if ( total == 0 ) return 0.0f;
@@ -412,7 +413,8 @@ void MOAIAnimCurve::SetKey ( u32 id, float time, float value, u32 mode, float we
 	}
 }
 
-float MOAIAnimCurve::WrapTimeValue ( float t, float &repeat ) {
+//----------------------------------------------------------------//
+float MOAIAnimCurve::WrapTimeValue ( float t, float &repeat ) const {
 
 	float startTime = ( *this )[ 0 ].mTime;
 	float length = GetLength ();

@@ -31,11 +31,12 @@ struct AKUContext {
 	
 	//----------------------------------------------------------------//
 	AKU_DEFINE_FUNC_CONTEXT ( EnterFullscreenMode );
+	AKU_DEFINE_FUNC_CONTEXT ( ErrorTraceback );
 	AKU_DEFINE_FUNC_CONTEXT ( ExitFullscreenMode );
 	AKU_DEFINE_FUNC_CONTEXT ( OpenWindow );
 	AKU_DEFINE_FUNC_CONTEXT ( SetSimStep );
 	
-	MOAIGlobals*			mGlobals;
+	MOAIGlobals*		mGlobals;
 	void*				mUserdata;
 };
 
@@ -51,6 +52,14 @@ static AKUContext*	gContext = 0;
 //----------------------------------------------------------------//
 static void _EnterFullscreenMode () {}
 AKU_DEFINE_FUNC_ACCESSORS ( EnterFullscreenMode, _EnterFullscreenMode )
+
+//----------------------------------------------------------------//
+static void _ErrorTraceback ( const char* message, struct lua_State* L, int level ) {
+    USLog::Print ( "%s\n", message );
+    MOAILuaStateHandle state ( L );
+    state.PrintStackTrace ( USLog::CONSOLE, level );
+}
+AKU_DEFINE_FUNC_ACCESSORS ( ErrorTraceback, _ErrorTraceback );
 
 //----------------------------------------------------------------//
 static void _ExitFullscreenMode () {}
@@ -86,11 +95,11 @@ static void _deleteContext ( AKUContext* context ) {
 //----------------------------------------------------------------//
 void AKUClearMemPool () {
 
-	ZIPFS_TLSF_POOL* pool = zipfs_tlsf_get_pool ();
-	zipfs_tlsf_set_pool ( 0 );
+	ZL_TLSF_POOL* pool = zl_tlsf_get_pool ();
+	zl_tlsf_set_pool ( 0 );
 	
 	if ( pool ) {
-		zipfs_tlsf_destroy_pool ( pool );
+		zl_tlsf_destroy_pool ( pool );
 	}
 }
 
@@ -113,6 +122,9 @@ AKUContextID AKUCreateContext () {
 	
 	gContext->mGlobals = MOAIGlobalsMgr::Create ();
 	moaicore::InitGlobals ( gContext->mGlobals );
+
+	// Always set our default error traceback
+	AKUSetFunc_ErrorTraceback ( _ErrorTraceback );
 
 	return gContextIDCounter;
 }
@@ -172,9 +184,9 @@ void AKUEnqueuePointerEvent ( int deviceID, int sensorID, int x, int y ) {
 }
 
 //----------------------------------------------------------------//
-void AKUEnqueueTouchEvent ( int deviceID, int sensorID, int touchID, bool down, float x, float y, int tapCount ) {
+void AKUEnqueueTouchEvent ( int deviceID, int sensorID, int touchID, bool down, float x, float y ) {
 
-	MOAIInputMgr::Get ().EnqueueTouchEvent (( u8 )deviceID, ( u8 )sensorID, ( u32 )touchID, down, x, y, ( u32 )tapCount );
+	MOAIInputMgr::Get ().EnqueueTouchEvent (( u8 )deviceID, ( u8 )sensorID, ( u32 )touchID, down, x, y );
 }
 
 //----------------------------------------------------------------//
@@ -242,24 +254,24 @@ double AKUGetSimStep () {
 }
 
 //----------------------------------------------------------------//
-char const* AKUGetWorkingDirectory () {
+char* AKUGetWorkingDirectory ( char* buffer, int length ) {
 
-	return zipfs_get_working_path ();
+	return zl_getcwd ( buffer, length );
 }
 
 //----------------------------------------------------------------//
 void AKUInitMemPool ( size_t bytes ) {
 
-	assert ( !zipfs_tlsf_get_pool ());
+	assert ( !zl_tlsf_get_pool ());
 
-	ZIPFS_TLSF_POOL* pool = zipfs_tlsf_create_pool ( bytes );
-	zipfs_tlsf_set_pool ( pool );
+	ZL_TLSF_POOL* pool = zl_tlsf_create_pool ( bytes );
+	zl_tlsf_set_pool ( pool );
 }
 
 //----------------------------------------------------------------//
 int AKUMountVirtualDirectory ( char const* virtualPath, char const* archive ) {
 
-	return zipfs_mount_virtual ( virtualPath, archive );
+	return zl_mount_virtual ( virtualPath, archive );
 }
 
 //----------------------------------------------------------------//
@@ -446,7 +458,7 @@ void AKUSetViewSize ( int width, int height ) {
 //----------------------------------------------------------------//
 int AKUSetWorkingDirectory ( char const* path ) {
 
-	return zipfs_chdir ( path );
+	return zl_chdir ( path );
 }
 
 //----------------------------------------------------------------//

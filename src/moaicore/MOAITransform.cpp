@@ -768,7 +768,7 @@ int MOAITransform::_setLoc ( lua_State* L ) {
 int MOAITransform::_setParent ( lua_State* L ) {
 	MOAI_LUA_SETUP ( MOAITransform, "U" )
 
-	MOAINode* parent = state.GetLuaObject < MOAINode >( 2 );
+	MOAINode* parent = state.GetLuaObject < MOAINode >( 2, true );
 	
 	self->SetAttrLink ( PACK_ATTR ( MOAITransform, INHERIT_TRANSFORM ), parent, PACK_ATTR ( MOAITransformBase, TRANSFORM_TRAIT ));
 	
@@ -988,18 +988,25 @@ bool MOAITransform::ApplyAttrOp ( u32 attrID, MOAIAttrOp& attrOp, u32 op ) {
 }
 
 //----------------------------------------------------------------//
-void MOAITransform::BuildTransforms ( float xOff, float yOff, float zOff, float xStretch, float yStretch, float zStretch ) {
+void MOAITransform::BuildTransforms () {
 	
+	if ( this->mRot.mZ >= 360.0f ) {
+		this->mRot.mZ = ( float )fmod ( this->mRot.mZ, 360.0f );
+	}
+	else if ( this->mRot.mZ < 0.0f ) {
+		this->mRot.mZ = 360.0f + ( float )fmod ( this->mRot.mZ, 360.0f );
+	}
+
 	this->mLocalToWorldMtx.ScRoTr (
-		this->mScale.mX * xStretch,
-		this->mScale.mY * yStretch,
-		this->mScale.mZ * zStretch,
+		this->mScale.mX,
+		this->mScale.mY,
+		this->mScale.mZ,
 		this->mRot.mX * ( float )D2R,
 		this->mRot.mY * ( float )D2R,
 		this->mRot.mZ * ( float )D2R,
-		this->mLoc.mX + xOff,
-		this->mLoc.mY + yOff,
-		this->mLoc.mZ + zOff
+		this->mLoc.mX,
+		this->mLoc.mY,
+		this->mLoc.mZ
 	);
 	
 	USAffine3D shear;
@@ -1034,13 +1041,52 @@ void MOAITransform::BuildTransforms ( float xOff, float yOff, float zOff, float 
 }
 
 //----------------------------------------------------------------//
-const USAffine3D& MOAITransform::GetLocalToWorldMtx () {
+USAffine3D MOAITransform::GetBillboardMtx ( const USAffine3D& faceCameraMtx ) const {
+
+	USAffine3D billboardMtx = this->GetLocalToWorldMtx ();
+		
+	USVec3D piv;
+	USVec3D worldLoc;
+	
+	// world space location for prop
+	worldLoc.mX = billboardMtx.m [ USAffine3D::C3_R0 ];
+	worldLoc.mY = billboardMtx.m [ USAffine3D::C3_R1 ];
+	worldLoc.mZ = billboardMtx.m [ USAffine3D::C3_R2 ];
+	
+	// just the rotate/scale matrices
+	billboardMtx.m [ USAffine3D::C3_R0 ] = 0.0f;
+	billboardMtx.m [ USAffine3D::C3_R1 ] = 0.0f;
+	billboardMtx.m [ USAffine3D::C3_R2 ] = 0.0f;
+	
+	// remove original pivot
+	piv = this->mPiv;
+	billboardMtx.Transform ( piv );
+	worldLoc.Add ( piv );
+	
+	// orient to face the camera
+	billboardMtx.Append ( faceCameraMtx );
+	
+	// add new pivot
+	piv = this->mPiv;
+	billboardMtx.Transform ( piv );
+	worldLoc.Sub ( piv );
+	
+	// remove the original pivot
+	billboardMtx.m [ USAffine3D::C3_R0 ] = worldLoc.mX;
+	billboardMtx.m [ USAffine3D::C3_R1 ] = worldLoc.mY;
+	billboardMtx.m [ USAffine3D::C3_R2 ] = worldLoc.mZ;
+	
+	return billboardMtx;
+}
+
+//----------------------------------------------------------------//
+const USAffine3D& MOAITransform::GetLocalToWorldMtx () const {
 
 	return this->mLocalToWorldMtx;
 }
 
 //----------------------------------------------------------------//
-const USAffine3D& MOAITransform::GetWorldToLocalMtx () {
+const USAffine3D& MOAITransform::GetWorldToLocalMtx () const {
 
 	return this->mWorldToLocalMtx;
 }
@@ -1070,7 +1116,7 @@ MOAITransform::~MOAITransform () {
 //----------------------------------------------------------------//
 void MOAITransform::OnDepNodeUpdate () {
 	
-	this->BuildTransforms ( 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f );
+	this->BuildTransforms ();
 }
 
 //----------------------------------------------------------------//

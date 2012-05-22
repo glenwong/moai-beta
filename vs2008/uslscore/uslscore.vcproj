@@ -58,7 +58,7 @@
 				PrecompiledHeaderThrough="pch.h"
 				WarningLevel="4"
 				DebugInformationFormat="3"
-				ForcedIncludeFiles="&quot;zipfs/zipfs_replace.h&quot;"
+				ForcedIncludeFiles="&quot;zlcore/zl_replace.h&quot;"
 				ShowIncludes="false"
 			/>
 			<Tool
@@ -135,7 +135,7 @@
 				PrecompiledHeaderThrough="pch.h"
 				WarningLevel="4"
 				DebugInformationFormat="0"
-				ForcedIncludeFiles="&quot;zipfs/zipfs_replace.h&quot;"
+				ForcedIncludeFiles="&quot;zlcore/zl_replace.h&quot;"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -351,14 +351,6 @@
 			</File>
 			<File
 				RelativePath="..\..\src\uslscore\USDirectoryItr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\uslscore\USFilename.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\uslscore\USFilename.h"
 				>
 			</File>
 			<File

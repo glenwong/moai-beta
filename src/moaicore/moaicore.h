@@ -20,6 +20,7 @@
 #include <moaicore/MOAIAttrOp.h>
 #include <moaicore/MOAIBitmapFontReader.h>
 #include <moaicore/MOAIBlendMode.h>
+#include <moaicore/MOAIBoundsDeck.h>
 #include <moaicore/MOAIButtonSensor.h>
 #include <moaicore/MOAICamera.h>
 #include <moaicore/MOAICameraAnchor2D.h>
@@ -33,7 +34,6 @@
 #include <moaicore/MOAIDataIOAction.h>
 #include <moaicore/MOAIDebugLines.h>
 #include <moaicore/MOAIDeck.h>
-#include <moaicore/MOAIDeck2D.h>
 #include <moaicore/MOAIDeckRemapper.h>
 #include <moaicore/MOAIDeserializer.h>
 #include <moaicore/MOAIDraw.h>
@@ -42,6 +42,8 @@
 #include <moaicore/MOAIEaseType.h>
 #include <moaicore/MOAIEventSource.h>
 #include <moaicore/MOAIFileSystem.h>
+#include <moaicore/MOAIFoo.h>
+#include <moaicore/MOAIFooMgr.h>
 #include <moaicore/MOAIFont.h>
 #include <moaicore/MOAIFontReader.h>
 #include <moaicore/MOAIFrameBuffer.h>
@@ -70,7 +72,6 @@
 #include <moaicore/MOAILayer.h>
 #include <moaicore/MOAILayerBridge.h>
 #include <moaicore/MOAILayoutFrame.h>
-#include <moaicore/MOAILineBrush.h>
 #include <moaicore/MOAILocationSensor.h>
 #include <moaicore/MOAILogMgr.h>
 #include <moaicore/MOAILogMessages.h>
@@ -82,9 +83,11 @@
 #include <moaicore/MOAIObject.h>
 #include <moaicore/MOAIParser.h>
 #include <moaicore/MOAIParticle.h>
+#include <moaicore/MOAIParticleCallbackPlugin.h>
 #include <moaicore/MOAIParticleDistanceEmitter.h>
 #include <moaicore/MOAIParticleEmitter.h>
 #include <moaicore/MOAIParticleForce.h>
+#include <moaicore/MOAIParticlePexPlugin.h>
 #include <moaicore/MOAIParticlePlugin.h>
 #include <moaicore/MOAIParticleScript.h>
 #include <moaicore/MOAIParticleState.h>
@@ -104,6 +107,7 @@
 #include <moaicore/MOAIRenderable.h>
 #include <moaicore/MOAIRenderMgr.h>
 #include <moaicore/MOAIRtti.h>
+#include <moaicore/MOAIScissorRect.h>
 #include <moaicore/MOAIScriptDeck.h>
 #include <moaicore/MOAIScriptNode.h>
 #include <moaicore/MOAISensor.h>
@@ -118,6 +122,7 @@
 #include <moaicore/MOAIStretchPatch2D.h>
 #include <moaicore/MOAISurfaceDeck2D.h>
 #include <moaicore/MOAITextBox.h>
+#include <moaicore/MOAITextBundle.h>
 #include <moaicore/MOAITextDesigner.h>
 #include <moaicore/MOAITextStyle.h>
 #include <moaicore/MOAITexture.h>

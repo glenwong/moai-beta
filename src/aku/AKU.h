@@ -34,11 +34,13 @@
 
 // Callback management
 typedef void ( *AKUEnterFullscreenModeFunc )	();
+typedef void ( *AKUErrorTracebackFunc )         ( const char* message, struct lua_State* L, int level );
 typedef void ( *AKUExitFullscreenModeFunc )		();
 typedef void ( *AKUOpenWindowFunc )				( const char* title, int width, int height );
 typedef void ( *AKUSetSimStepFunc )				( double step );
 
 AKU_DECLARE_FUNC_ACCESSORS ( EnterFullscreenMode )
+AKU_DECLARE_FUNC_ACCESSORS ( ErrorTraceback )
 AKU_DECLARE_FUNC_ACCESSORS ( ExitFullscreenMode )
 AKU_DECLARE_FUNC_ACCESSORS ( OpenWindow )
 AKU_DECLARE_FUNC_ACCESSORS ( SetSimStep )
@@ -61,7 +63,7 @@ AKU_API void			AKUSetUserdata					( void* user );
 AKU_API void			AKUDetectGfxContext				();
 AKU_API lua_State*		AKUGetLuaState					();
 AKU_API double			AKUGetSimStep					();
-AKU_API char const*		AKUGetWorkingDirectory			();
+AKU_API char*			AKUGetWorkingDirectory			( char* buffer, int length );
 AKU_API int				AKUMountVirtualDirectory		( char const* virtualPath, char const* archive );
 AKU_API void			AKUPause						( bool pause );
 AKU_API void			AKUReleaseGfxContext			();
@@ -98,7 +100,7 @@ AKU_API void			AKUEnqueueKeyboardEvent			( int deviceID, int sensorID, int keyID
 AKU_API void			AKUEnqueueLevelEvent			( int deviceID, int sensorID, float x, float y, float z );
 AKU_API void			AKUEnqueueLocationEvent			( int deviceID, int sensorID, double longitude, double latitude, double altitude, float hAccuracy, float vAccuracy, float speed );
 AKU_API void			AKUEnqueuePointerEvent			( int deviceID, int sensorID, int x, int y );
-AKU_API void			AKUEnqueueTouchEvent			( int deviceID, int sensorID, int touchID, bool down, float x, float y, int tapCount );
+AKU_API void			AKUEnqueueTouchEvent			( int deviceID, int sensorID, int touchID, bool down, float x, float y );
 AKU_API void			AKUEnqueueTouchEventCancel		( int deviceID, int sensorID );
 AKU_API void			AKUEnqueueWheelEvent			( int deviceID, int sensorID, float value );
 
