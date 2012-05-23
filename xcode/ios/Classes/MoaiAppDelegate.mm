@@ -45,9 +45,11 @@
 		
 		[ application setStatusBarHidden:true ];
 		
-        application.statusBarOrientation = UIInterfaceOrientationPortrait;
+        application.statusBarOrientation = UIInterfaceOrientationLandscapeLeft;
         
-		mMoaiView = [[ MoaiView alloc ] initWithFrame:[ UIScreen mainScreen ].bounds ];
+        
+        CGRect bounds = [UIScreen mainScreen].bounds;
+		mMoaiView = [[ MoaiView alloc ] initWithFrame:CGRectMake(bounds.origin.y, bounds.origin.x, bounds.size.height, bounds.size.width) ];
 		[ mMoaiView setUserInteractionEnabled:YES ];
 		[ mMoaiView setMultipleTouchEnabled:YES ];
 		[ mMoaiView setOpaque:YES ];
